@@ -2,269 +2,693 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VitalDiagnostik — Ganzheitliches Blutscreening</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>VitalDiagnostik</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,sans-serif;color:#1a1a1a;background:#f5f4f0;min-height:100vh;padding:1rem}
-:root{--color-background-primary:#fff;--color-background-secondary:#f5f4f0;--color-border-tertiary:rgba(0,0,0,0.12);--color-border-secondary:rgba(0,0,0,0.25);--color-text-primary:#1a1a1a;--color-text-secondary:#555;--color-text-tertiary:#999;--border-radius-md:8px;--border-radius-lg:12px}
-.app{display:flex;min-height:600px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;background:var(--color-background-primary);max-width:900px;margin:0 auto}
-.sidebar{width:220px;background:var(--color-background-secondary);border-right:0.5px solid var(--color-border-tertiary);padding:1rem 0;flex-shrink:0}
-.logo{padding:0 1rem 1rem;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:0.75rem}
-.logo-title{font-size:14px;font-weight:500}
-.logo-sub{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:8px 1rem;font-size:13px;cursor:pointer;color:var(--color-text-secondary);border-left:2px solid transparent}
-.nav-item:hover{background:var(--color-background-primary);color:var(--color-text-primary)}
-.nav-item.active{background:var(--color-background-primary);color:#1a1a1a;border-left-color:#533AB7;font-weight:500}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --purple:#533AB7;--purple-light:#EEEDFE;--purple-dark:#26215C;
+  --red:#E24B4A;--red-light:#FCEBEB;
+  --green:#639922;--green-light:#EAF3DE;
+  --orange:#EF9F27;--orange-light:#FAEEDA;
+  --blue-light:#E6F1FB;
+  --bg:#f5f4f0;--card:#fff;
+  --border:rgba(0,0,0,0.10);--border2:rgba(0,0,0,0.22);
+  --text:#1a1a1a;--text2:#555;--text3:#999;
+  --r:10px;--r2:14px;
+}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.screen{display:none;min-height:100vh}
+.screen.active{display:block}
+
+/* CLIENT SCREEN */
+#screen-client{background:linear-gradient(160deg,#f0eefb 0%,#f5f4f0 60%)}
+.client-wrap{max-width:680px;margin:0 auto;padding:1.5rem 1rem 4rem}
+.client-logo{text-align:center;padding:2rem 0 1.5rem}
+.client-logo-mark{width:56px;height:56px;background:var(--purple);border-radius:16px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:0.75rem}
+.client-logo-mark i{font-size:28px;color:#fff}
+.client-logo h1{font-size:22px;font-weight:600;color:var(--purple-dark)}
+.client-logo p{font-size:13px;color:var(--text2);margin-top:4px}
+.form-card{background:var(--card);border-radius:var(--r2);border:0.5px solid var(--border);padding:1.25rem;margin-bottom:1rem;box-shadow:0 2px 12px rgba(0,0,0,0.04)}
+.form-section-title{font-size:11px;font-weight:600;color:var(--purple);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:1rem;display:flex;align-items:center;gap:6px}
+.form-section-title i{font-size:15px}
+.field{margin-bottom:0.9rem}
+.field label{font-size:12px;color:var(--text2);display:block;margin-bottom:4px;font-weight:500}
+.field input,.field select,.field textarea{width:100%;padding:11px 13px;font-size:15px;border:1px solid var(--border2);border-radius:var(--r);background:#fff;color:var(--text);font-family:inherit;outline:none;transition:border 0.15s;-webkit-appearance:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--purple)}
+.field textarea{resize:none;height:80px;line-height:1.5}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
+.symptom-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.symptom-check{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--border2);border-radius:var(--r);cursor:pointer;font-size:14px;background:#fff;transition:all 0.15s;user-select:none}
+.symptom-check.selected{background:var(--purple-light);border-color:var(--purple);color:var(--purple-dark);font-weight:500}
+.symptom-check i{font-size:16px;color:var(--text3)}
+.symptom-check.selected i{color:var(--purple)}
+.scale-row{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
+.scale-btn{flex:1;min-width:28px;padding:10px 4px;border:1px solid var(--border2);border-radius:8px;text-align:center;cursor:pointer;font-size:14px;font-weight:500;background:#fff;transition:all 0.15s}
+.scale-btn.selected{background:var(--purple);color:#fff;border-color:var(--purple)}
+.dsgvo-box{background:#f8f7ff;border:1px solid var(--purple);border-radius:var(--r2);padding:1.25rem;margin-bottom:1rem}
+.dsgvo-title{font-size:13px;font-weight:600;color:var(--purple-dark);display:flex;align-items:center;gap:6px;margin-bottom:0.75rem}
+.dsgvo-text{font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:1rem}
+.dsgvo-text b{color:var(--text)}
+.consent-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:0.75rem;cursor:pointer}
+.consent-row input[type=checkbox]{width:20px;height:20px;margin-top:1px;flex-shrink:0;accent-color:var(--purple);cursor:pointer}
+.consent-row span{font-size:13px;color:var(--text);line-height:1.5}
+.sig-canvas{width:100%;height:140px;border:1.5px dashed var(--border2);border-radius:var(--r);background:#fff;cursor:crosshair;touch-action:none;display:block}
+.sig-canvas.signed{border-style:solid;border-color:var(--purple)}
+.sig-clear{font-size:11px;color:var(--text3);cursor:pointer;text-decoration:underline;margin-top:4px;display:inline-block}
+.btn-submit{width:100%;padding:16px;background:var(--purple);color:#fff;border:none;border-radius:var(--r2);font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background 0.2s;margin-top:0.5rem}
+.btn-submit:hover{background:var(--purple-dark)}
+.btn-submit:disabled{background:#ccc;cursor:not-allowed}
+
+/* DONE SCREEN */
+#screen-done{background:linear-gradient(160deg,#f0eefb 0%,#f5f4f0 60%);display:flex;align-items:center;justify-content:center}
+.done-wrap{text-align:center;padding:2rem;max-width:400px;margin:0 auto}
+.done-icon{width:80px;height:80px;background:var(--green-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem}
+.done-icon i{font-size:40px;color:var(--green)}
+.done-title{font-size:24px;font-weight:700;color:var(--purple-dark);margin-bottom:0.5rem}
+.done-sub{font-size:14px;color:var(--text2);margin-bottom:2rem;line-height:1.6}
+.pin-label{font-size:12px;color:var(--text2);margin-bottom:8px;font-weight:500}
+.pin-display{font-size:36px;font-weight:700;letter-spacing:10px;color:var(--purple);background:var(--purple-light);border-radius:var(--r);padding:14px 28px;display:inline-block;margin-bottom:2rem}
+.btn-therapist{padding:14px 28px;background:var(--purple);color:#fff;border:none;border-radius:var(--r2);font-size:15px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+
+/* PIN SCREEN */
+#screen-pin{background:linear-gradient(160deg,#f0eefb 0%,#f5f4f0 60%);display:flex;align-items:center;justify-content:center}
+.pin-wrap{text-align:center;padding:2rem;max-width:340px;width:100%;margin:0 auto}
+.pin-wrap h2{font-size:20px;font-weight:600;color:var(--purple-dark);margin-bottom:0.4rem}
+.pin-wrap p{font-size:13px;color:var(--text2);margin-bottom:1.5rem}
+.pin-input-row{display:flex;gap:10px;justify-content:center;margin-bottom:1.5rem}
+.pin-digit{width:60px;height:70px;border:2px solid var(--border2);border-radius:var(--r);font-size:30px;font-weight:700;text-align:center;outline:none;color:var(--purple-dark);transition:border 0.15s}
+.pin-digit:focus{border-color:var(--purple)}
+.pin-error{font-size:13px;color:var(--red);margin-bottom:1rem;min-height:20px}
+.btn-enter{width:100%;padding:14px;background:var(--purple);color:#fff;border:none;border-radius:var(--r2);font-size:15px;font-weight:600;cursor:pointer}
+
+/* THERAPIST SCREEN */
+#screen-therapist{background:var(--bg)}
+.app{display:flex;min-height:100vh}
+.sidebar{width:220px;background:var(--bg);border-right:0.5px solid var(--border);padding:1rem 0;flex-shrink:0}
+.logo{padding:0 1rem 1rem;border-bottom:0.5px solid var(--border);margin-bottom:0.75rem}
+.logo-title{font-size:14px;font-weight:600}
+.logo-sub{font-size:11px;color:var(--text2);margin-top:2px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 1rem;font-size:13px;cursor:pointer;color:var(--text2);border-left:2px solid transparent}
+.nav-item:hover{background:var(--card);color:var(--text)}
+.nav-item.active{background:var(--card);color:var(--text);border-left-color:var(--purple);font-weight:500}
 .nav-item i{font-size:16px}
-.nav-group{font-size:10px;font-weight:500;color:var(--color-text-tertiary);padding:0.75rem 1rem 0.25rem;text-transform:uppercase;letter-spacing:0.05em}
+.nav-group{font-size:10px;font-weight:600;color:var(--text3);padding:0.75rem 1rem 0.25rem;text-transform:uppercase;letter-spacing:0.05em}
 .main{flex:1;overflow:hidden;display:flex;flex-direction:column}
-.topbar{padding:0.75rem 1.25rem;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:space-between;background:#fff}
+.topbar{padding:0.75rem 1.25rem;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--card)}
 .topbar-title{font-size:15px;font-weight:500}
-.btn{padding:6px 12px;font-size:12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);cursor:pointer;background:#fff;color:#1a1a1a;display:inline-flex;align-items:center;gap:6px}
-.btn-primary{background:#533AB7;color:#fff;border-color:#533AB7}
+.btn{padding:6px 12px;font-size:12px;border:0.5px solid var(--border2);border-radius:8px;cursor:pointer;background:var(--card);color:var(--text);display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:var(--purple);color:#fff;border-color:var(--purple)}
 .content{flex:1;overflow-y:auto;padding:1.25rem}
 .panel{display:none}.panel.active{display:block}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem}
-.card{background:#fff;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:0}
+.card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--r2);padding:1rem 1.25rem;margin-bottom:0}
 .card-title{font-size:13px;font-weight:500;margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
-.card-title i{color:#533AB7;font-size:16px}
-.metric{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:0.75rem 1rem}
-.metric-label{font-size:11px;color:var(--color-text-secondary);margin-bottom:4px}
-.metric-value{font-size:22px;font-weight:500}
-.metric-sub{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.card-title i{color:var(--purple);font-size:16px}
 .tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;margin:2px}
-.tag-warn{background:#FAEEDA;color:#633806}
-.tag-danger{background:#FCEBEB;color:#501313}
-.tag-ok{background:#EAF3DE;color:#173404}
-.tag-info{background:#E6F1FB;color:#042C53}
-.tag-purple{background:#EEEDFE;color:#26215C}
-.progress-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.progress-label{font-size:12px;color:var(--color-text-secondary);width:120px;flex-shrink:0}
-.progress-bar-wrap{flex:1;height:6px;background:var(--color-background-secondary);border-radius:3px;overflow:hidden}
-.progress-bar{height:100%;border-radius:3px}
-.progress-val{font-size:12px;font-weight:500;width:50px;text-align:right;flex-shrink:0}
+.tag-warn{background:var(--orange-light);color:#633806}
+.tag-danger{background:var(--red-light);color:#501313}
+.tag-ok{background:var(--green-light);color:#173404}
+.tag-info{background:var(--blue-light);color:#042C53}
+.tag-purple{background:var(--purple-light);color:var(--purple-dark)}
 .symptom-list{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
-.match-item{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:8px 10px;margin-bottom:8px;font-size:12px}
+.progress-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.progress-label{font-size:12px;color:var(--text2);width:120px;flex-shrink:0}
+.progress-bar-wrap{flex:1;height:6px;background:var(--bg);border-radius:3px;overflow:hidden}
+.progress-bar{height:100%;border-radius:3px}
+.progress-val{font-size:12px;font-weight:500;width:50px;text-align:right}
+.match-item{border:0.5px solid var(--border);border-radius:8px;padding:8px 10px;margin-bottom:8px;font-size:12px}
 .match-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
 .match-title{font-weight:500;font-size:13px}
-.rec-card{border-left:3px solid #533AB7;padding:8px 10px;background:var(--color-background-secondary);margin-bottom:6px;font-size:12px;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0}
-.rec-label{font-size:10px;font-weight:500;color:#533AB7;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:2px}
-.photo-box{border:1.5px dashed var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:1.5rem;text-align:center;cursor:pointer;background:var(--color-background-secondary)}
-.photo-box i{font-size:28px;color:var(--color-text-tertiary);display:block;margin-bottom:8px}
-.photo-box p{font-size:12px;color:var(--color-text-secondary)}
-.blood-row{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:12px}
+.rec-card{border-left:3px solid var(--purple);padding:8px 10px;background:var(--bg);margin-bottom:6px;font-size:12px;border-radius:0 8px 8px 0}
+.rec-label{font-size:10px;font-weight:600;color:var(--purple);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:2px}
+.blood-row{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:0.5px solid var(--border);font-size:12px}
 .blood-name{flex:1;font-weight:500}
 .blood-val{width:80px;text-align:right}
-.blood-ref{width:110px;color:var(--color-text-secondary);text-align:right}
-.blood-bar-wrap{width:80px;height:4px;background:var(--color-background-secondary);border-radius:2px;overflow:hidden}
+.blood-ref{width:110px;color:var(--text2);text-align:right}
+.blood-bar-wrap{width:80px;height:4px;background:var(--bg);border-radius:2px;overflow:hidden}
 .blood-bar{height:100%;border-radius:2px}
-.campus-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;cursor:pointer}
-.campus-header{height:60px;display:flex;align-items:center;justify-content:center}
-.campus-body{padding:0.75rem 1rem}
-.campus-tag{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px}
-.campus-name{font-size:13px;font-weight:500;margin-bottom:2px}
-.campus-sub{font-size:11px;color:var(--color-text-secondary)}
 .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:500}
-.divider{border:none;border-top:0.5px solid var(--color-border-tertiary);margin:1rem 0}
-input[type=text],select,textarea{width:100%;padding:7px 10px;font-size:13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:#fff;color:#1a1a1a;font-family:inherit;margin-bottom:8px}
-label{font-size:12px;color:var(--color-text-secondary);display:block;margin-bottom:3px}
+.divider{border:none;border-top:0.5px solid var(--border);margin:1rem 0}
+.metric{background:var(--bg);border-radius:8px;padding:0.75rem 1rem}
+.metric-label{font-size:11px;color:var(--text2);margin-bottom:4px}
+.metric-value{font-size:22px;font-weight:500}
+.metric-sub{font-size:11px;color:var(--text2);margin-top:2px}
+.client-summary{background:linear-gradient(135deg,var(--purple-light),#fff);border:1px solid var(--purple);border-radius:var(--r2);padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:flex-start;gap:1rem}
+.client-avatar{width:48px;height:48px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.client-avatar i{font-size:24px;color:#fff}
+.client-info h3{font-size:15px;font-weight:600;color:var(--purple-dark)}
+.client-info p{font-size:12px;color:var(--text2);margin-top:2px}
+.client-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.sig-preview-canvas{width:100%;max-width:200px;border:1px solid var(--border);border-radius:8px;background:#fff;display:block}
+.record-area{background:var(--purple-light);border:1px solid var(--purple);border-radius:var(--r2);padding:1rem;margin-bottom:1rem}
+.record-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem}
+.record-title{font-size:13px;font-weight:500;color:var(--purple-dark);display:flex;align-items:center;gap:6px}
+.btn-record{background:var(--purple);color:#fff;border:none;border-radius:50px;padding:8px 18px;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.2s}
+.btn-record.recording{background:var(--red);animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(226,75,74,0.4)}50%{box-shadow:0 0 0 8px rgba(226,75,74,0)}}
+.record-dot{width:8px;height:8px;border-radius:50%;background:#fff;display:inline-block}
+.record-dot.blinking{animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+.transcript-box{background:#fff;border-radius:8px;padding:0.75rem;min-height:70px;font-size:12px;line-height:1.6;border:0.5px solid var(--border)}
+.ai-box{background:#fff;border-radius:8px;padding:0.75rem;border:0.5px solid var(--purple);margin-top:0.75rem;display:none}
+.ai-title{font-size:11px;font-weight:600;color:var(--purple);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.5rem;display:flex;align-items:center;gap:4px}
+.status-bar{font-size:11px;color:var(--text2);margin-top:0.5rem;display:flex;align-items:center;gap:6px}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block}
+.timer{font-size:12px;color:var(--purple-dark);font-weight:500}
+input[type=text],select,textarea{width:100%;padding:7px 10px;font-size:13px;border:0.5px solid var(--border2);border-radius:8px;background:#fff;color:var(--text);font-family:inherit;margin-bottom:8px;-webkit-appearance:none}
 </style>
 </head>
 <body>
-<div class="app">
-<div class="sidebar">
-  <div class="logo">
-    <div class="logo-title">VitalDiagnostik</div>
-    <div class="logo-sub">Ganzheitliches Screening</div>
-  </div>
-  <div class="nav-group">Klient</div>
-  <div class="nav-item active" onclick="showPanel('anamnese',this)"><i class="ti ti-clipboard-list"></i>Anamnese</div>
-  <div class="nav-item" onclick="showPanel('diagnostik',this)"><i class="ti ti-scan"></i>Bild-Diagnostik</div>
-  <div class="nav-item" onclick="showPanel('blut',this)"><i class="ti ti-droplet"></i>Blutwerte</div>
-  <div class="nav-group">Auswertung</div>
-  <div class="nav-item" onclick="showPanel('matching',this)"><i class="ti ti-git-merge"></i>Symptom-Matching</div>
-  <div class="nav-item" onclick="showPanel('naehrstoffe',this)"><i class="ti ti-leaf"></i>Nährstoffprofil</div>
-  <div class="nav-item" onclick="showPanel('empfehlungen',this)"><i class="ti ti-clipboard-check"></i>Handlungsplan</div>
-  <div class="nav-group">Plattform</div>
-  <div class="nav-item" onclick="showPanel('campus',this)"><i class="ti ti-school"></i>Campus</div>
-  <div class="nav-item" onclick="showPanel('praxis',this)"><i class="ti ti-building"></i>Praxis-Dashboard</div>
-</div>
-<div class="main">
-  <div class="topbar">
-    <div class="topbar-title" id="topbar-title">Anamnese — Symptomerfassung</div>
-    <div style="display:flex;gap:8px;align-items:center">
-      <span class="badge" style="background:#EEEDFE;color:#26215C">● Screening aktiv</span>
-      <button class="btn btn-primary"><i class="ti ti-file-export"></i>Bericht</button>
-    </div>
-  </div>
-  <div class="content">
 
-    <div class="panel active" id="panel-anamnese">
-      <div class="grid2" style="margin-bottom:1rem">
-        <div class="card">
-          <div class="card-title"><i class="ti ti-user"></i>Klientendaten</div>
-          <label>Name</label><input type="text" value="Maria Hoffmann">
-          <label>Alter</label><input type="text" value="42">
-          <label>Hauptbeschwerden</label>
-          <textarea style="height:70px;resize:none">Erschöpfung, Konzentrationsprobleme, Rückenschmerzen, Verdauungsbeschwerden</textarea>
+<!-- SCREEN 1: KLIENT -->
+<div class="screen active" id="screen-client">
+  <div class="client-wrap">
+    <div class="client-logo">
+      <div class="client-logo-mark"><i class="ti ti-heartbeat"></i></div>
+      <h1>VitalDiagnostik</h1>
+      <p>Bitte f&uuml;llen Sie diesen Bogen vor Ihrem Gespr&auml;ch aus.</p>
+    </div>
+
+    <div class="form-card">
+      <div class="form-section-title"><i class="ti ti-user"></i>Pers&ouml;nliche Daten</div>
+      <div class="field-row">
+        <div class="field"><label>Vorname</label><input type="text" id="c-firstname" placeholder="Maria"></div>
+        <div class="field"><label>Nachname</label><input type="text" id="c-lastname" placeholder="Hoffmann"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Geburtsdatum</label><input type="text" id="c-birth" placeholder="15.03.1982"></div>
+        <div class="field"><label>Geschlecht</label>
+          <select id="c-gender"><option value="">Bitte w&auml;hlen</option><option>Weiblich</option><option>M&auml;nnlich</option><option>Divers</option></select>
         </div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-checklist"></i>Symptome</div>
-          <div class="symptom-list">
-            <span class="tag tag-danger">Erschöpfung</span>
-            <span class="tag tag-danger">Konzentration ↓</span>
-            <span class="tag tag-warn">Rückenschmerzen</span>
-            <span class="tag tag-warn">Verdauung</span>
-            <span class="tag tag-ok">Schlafprobleme</span>
-            <span class="tag tag-info">Haarausfall</span>
-            <span class="tag tag-purple">Stimmungsschwankungen</span>
-          </div>
-          <hr class="divider" style="margin:0.5rem 0">
-          <div class="card-title"><i class="ti ti-question-mark"></i>Alltagsfragen</div>
-          <div class="grid3" style="gap:6px">
-            <div style="font-size:11px;border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:8px"><b>Ernährung</b><br>Hülsenfrüchte? Jodiertes Salz?</div>
-            <div style="font-size:11px;border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:8px"><b>Haltung</b><br>Wie viele Stunden sitzen täglich?</div>
-            <div style="font-size:11px;border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:8px"><b>Schlaf</b><br>Aufwachen 1–3 Uhr? Bildschirme?</div>
-          </div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Beruf</label><input type="text" id="c-job" placeholder="B&uuml;rot&auml;tigkeit"></div>
+        <div class="field"><label>K&ouml;rpergewicht (kg)</label><input type="text" id="c-weight" placeholder="65"></div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-section-title"><i class="ti ti-alert-circle"></i>Hauptbeschwerden</div>
+      <div class="field">
+        <label>Was f&uuml;hrt Sie heute her?</label>
+        <textarea id="c-complaints" placeholder="z.B. Ich f&uuml;hle mich seit Monaten ersch&ouml;pft, schlafe schlecht..."></textarea>
+      </div>
+      <div class="field">
+        <label>Seit wann bestehen die Beschwerden?</label>
+        <select id="c-duration">
+          <option value="">Bitte w&auml;hlen</option>
+          <option>Weniger als 1 Monat</option><option>1&ndash;3 Monate</option>
+          <option>3&ndash;6 Monate</option><option>6&ndash;12 Monate</option><option>L&auml;nger als 1 Jahr</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Wie stark beeintr&auml;chtigen Sie die Beschwerden? (1 = kaum &nbsp;|&nbsp; 10 = sehr stark)</label>
+        <div class="scale-row" id="pain-scale">
+          <div class="scale-btn" onclick="selectScale(this,1)">1</div><div class="scale-btn" onclick="selectScale(this,2)">2</div>
+          <div class="scale-btn" onclick="selectScale(this,3)">3</div><div class="scale-btn" onclick="selectScale(this,4)">4</div>
+          <div class="scale-btn" onclick="selectScale(this,5)">5</div><div class="scale-btn" onclick="selectScale(this,6)">6</div>
+          <div class="scale-btn" onclick="selectScale(this,7)">7</div><div class="scale-btn" onclick="selectScale(this,8)">8</div>
+          <div class="scale-btn" onclick="selectScale(this,9)">9</div><div class="scale-btn" onclick="selectScale(this,10)">10</div>
         </div>
       </div>
     </div>
 
-    <div class="panel" id="panel-diagnostik">
-      <div class="grid2" style="margin-bottom:1rem">
-        <div class="card">
-          <div class="card-title"><i class="ti ti-face-id"></i>Gesichtsdiagnostik</div>
-          <div class="photo-box" onclick="this.innerHTML='<i class=\'ti ti-check\' style=\'font-size:28px;color:#639922;display:block;margin-bottom:8px\'></i><p>Bild geladen — Analyse läuft</p>'">
-            <i class="ti ti-camera"></i><p>Foto aufnehmen oder hochladen</p>
-          </div>
-          <hr class="divider">
-          <div class="match-item"><div class="match-header"><span class="match-title">Augenunterränder</span><span class="tag tag-warn">Niere / Erschöpfung</span></div><div style="font-size:11px;color:var(--color-text-secondary)">Dunkle Verfärbung → Nierenbelastung, Eisenmangel</div></div>
-          <div class="match-item"><div class="match-header"><span class="match-title">Hautfarbe temporal</span><span class="tag tag-info">Leber</span></div><div style="font-size:11px;color:var(--color-text-secondary)">Leichte Gelbfärbung → Leberparameter prüfen</div></div>
-        </div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-language"></i>Zungendiagnostik</div>
-          <div class="photo-box" style="margin-bottom:1rem"><i class="ti ti-camera"></i><p>Zungenaufnahme machen</p></div>
-          <div class="match-item"><div class="match-header"><span class="match-title">Weißer Belag</span><span class="tag tag-warn">Darm / Magen</span></div><div style="font-size:11px;color:var(--color-text-secondary)">Dicker weißer Belag → Darmflora, Candidose prüfen</div></div>
-          <div class="match-item"><div class="match-header"><span class="match-title">Zahneindrücke lateral</span><span class="tag tag-danger">Milz / Erschöpfung</span></div><div style="font-size:11px;color:var(--color-text-secondary)">Geschwollene Zunge → Vitaminmangel, Schilddrüse</div></div>
-        </div>
+    <div class="form-card">
+      <div class="form-section-title"><i class="ti ti-checklist"></i>Symptome &mdash; bitte alle ankreuzen die zutreffen</div>
+      <div class="symptom-grid">
+        <div class="symptom-check" onclick="toggleSymptom(this)" data-s="Ersch&ouml;pfung / M&uuml;digkeit"><i class="ti ti-battery-low"></i>Ersch&ouml;pfung / M&uuml;digkeit</div>
+        <div class="symptom-check" onclick="toggleSymptom(this)" data-s="Schlafprobleme"><i class="ti ti-moon"></i>Schlafprobleme</div>
+        <div class="symptom-check" onclick="toggleSymptom(this)" data-s="Konzentrationsprobleme"><i class="ti ti-brain"></i>Konzentrationsprobleme</div>
+        <div class="symptom-check" onclick="toggleSymptom(this)" data-s="Stimmungsschwankungen"><i class="ti ti-mood-confuzed"></i>Stimmungsschwankungen</div>
+        <div class="symptom-check" onclick="toggleSymptom(this)" data-s="Kopfschmerzen"><i class="ti ti-urgent"></i>Kopfschmerzen</div>
+        <div class="symptom-check" onclick="toggleSymptom(this)" data-s="R&uuml;cken- / Gelenkschmerzen"><i class="ti ti-spine"></i>R&uuml;cken- / Gelenkschmerzen</div>
+        <div class="symptom-check" onclick="toggleSymptom(this)" data-s="Verdauungsprobleme"><i class="ti ti-ripple"></i>Verdauungsprobleme</div>
+        <div class="symptom-check" onclick="toggleSymptom(this)" data-s="Bl&auml;hungen / V&ouml;llegef&uuml;hl"><i class="ti ti-circle-dotted"></i>Bl&auml;hungen / V&ouml;llegef&uuml;hl</div>
+        <div class="symptom-check" onclick="toggleSymptom(this)" data-s="Haarausfall"><i class="ti ti-razor"></i>Haarausfall</div>
+        <div class="symptom-check" onclick="toggleSymptom(this)" data-s="Hautprobleme"><i class="ti ti-sun"></i>Hautprobleme</div>
+        <div class="symptom-check" onclick="toggleSymptom(this)" data-s="Herzrasen"><i class="ti ti-heartbeat"></i>Herzrasen / Palpitationen</div>
+        <div class="symptom-check" onclick="toggleSymptom(this)" data-s="Frieren / K&auml;ltegef&uuml;hl"><i class="ti ti-snowflake"></i>Frieren / K&auml;ltegef&uuml;hl</div>
+        <div class="symptom-check" onclick="toggleSymptom(this)" data-s="Gewichtsver&auml;nderung"><i class="ti ti-scale"></i>Gewichtsver&auml;nderung</div>
+        <div class="symptom-check" onclick="toggleSymptom(this)" data-s="Muskelschw&auml;che / Kr&auml;mpfe"><i class="ti ti-dumbbell"></i>Muskelschw&auml;che / Kr&auml;mpfe</div>
+        <div class="symptom-check" onclick="toggleSymptom(this)" data-s="Sehprobleme"><i class="ti ti-eye"></i>Sehprobleme</div>
+        <div class="symptom-check" onclick="toggleSymptom(this)" data-s="Tinnitus"><i class="ti ti-ear"></i>Tinnitus</div>
       </div>
     </div>
 
-    <div class="panel" id="panel-blut">
-      <div class="card" style="margin-bottom:1rem">
-        <div class="card-title"><i class="ti ti-droplet"></i>Blutwerte — Präventionsrahmen</div>
-        <div style="font-size:11px;color:#412402;padding:6px 10px;background:#FAEEDA;border-radius:8px;margin-bottom:1rem">⚠ Orientierungswerte für Prävention · kein Medizinprodukt · ersetzt keine ärztliche Diagnose</div>
-        <div class="blood-row" style="font-size:11px;color:var(--color-text-secondary);font-weight:500">
-          <span class="blood-name">Parameter</span><span class="blood-val">Wert</span><span class="blood-ref">Prävention-Opt.</span><span class="blood-bar-wrap" style="background:transparent"></span><span style="width:90px;text-align:center">Status</span>
+    <div class="form-card">
+      <div class="form-section-title"><i class="ti ti-leaf"></i>Lebensstil</div>
+      <div class="field">
+        <label>Ern&auml;hrung</label>
+        <select id="c-diet">
+          <option value="">Bitte w&auml;hlen</option>
+          <option>Gemischt (alles)</option><option>Vegetarisch</option><option>Vegan</option><option>Low Carb / Keto</option><option>Glutenfrei</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Stunden Sitzen t&auml;glich</label>
+          <select id="c-sitting"><option value="">W&auml;hlen</option><option>Unter 4h</option><option>4&ndash;6h</option><option>6&ndash;8h</option><option>&Uuml;ber 8h</option></select>
         </div>
-        <div class="blood-row"><span class="blood-name">Ferritin</span><span class="blood-val">12 µg/l</span><span class="blood-ref">70–150 µg/l</span><div class="blood-bar-wrap"><div class="blood-bar" style="width:8%;background:#E24B4A"></div></div><span style="width:90px;text-align:center"><span class="tag tag-danger">↓ Niedrig</span></span></div>
-        <div class="blood-row"><span class="blood-name">Vitamin D3</span><span class="blood-val">22 ng/ml</span><span class="blood-ref">60–80 ng/ml</span><div class="blood-bar-wrap"><div class="blood-bar" style="width:27%;background:#EF9F27"></div></div><span style="width:90px;text-align:center"><span class="tag tag-warn">↓ Grenzwertig</span></span></div>
-        <div class="blood-row"><span class="blood-name">TSH</span><span class="blood-val">3.8 mIU/l</span><span class="blood-ref">0.5–2.0 mIU/l</span><div class="blood-bar-wrap"><div class="blood-bar" style="width:85%;background:#EF9F27"></div></div><span style="width:90px;text-align:center"><span class="tag tag-warn">↑ Grenzwertig</span></span></div>
-        <div class="blood-row"><span class="blood-name">hsCRP</span><span class="blood-val">0.3 mg/l</span><span class="blood-ref">unter 0.5 mg/l</span><div class="blood-bar-wrap"><div class="blood-bar" style="width:60%;background:#639922"></div></div><span style="width:90px;text-align:center"><span class="tag tag-ok">Optimal</span></span></div>
-        <div class="blood-row"><span class="blood-name">Magnesium</span><span class="blood-val">0.68 mmol/l</span><span class="blood-ref">0.85–1.0 mmol/l</span><div class="blood-bar-wrap"><div class="blood-bar" style="width:35%;background:#E24B4A"></div></div><span style="width:90px;text-align:center"><span class="tag tag-danger">↓ Niedrig</span></span></div>
-        <div class="blood-row"><span class="blood-name">Homocystein</span><span class="blood-val">11.2 µmol/l</span><span class="blood-ref">unter 8 µmol/l</span><div class="blood-bar-wrap"><div class="blood-bar" style="width:78%;background:#E24B4A"></div></div><span style="width:90px;text-align:center"><span class="tag tag-danger">↑ Erhöht</span></span></div>
-        <div class="blood-row" style="border:none"><span class="blood-name">Zink</span><span class="blood-val">9.1 µmol/l</span><span class="blood-ref">12–18 µmol/l</span><div class="blood-bar-wrap"><div class="blood-bar" style="width:45%;background:#EF9F27"></div></div><span style="width:90px;text-align:center"><span class="tag tag-warn">↓ Grenzwertig</span></span></div>
+        <div class="field"><label>Sport pro Woche</label>
+          <select id="c-sport"><option value="">W&auml;hlen</option><option>Kein Sport</option><option>1x</option><option>2&ndash;3x</option><option>4x oder mehr</option></select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Bekannte Erkrankungen / aktuelle Medikamente</label>
+        <textarea id="c-meds" placeholder="z.B. Schilddr&uuml;senunterfunktion, L-Thyroxin 75mcg..."></textarea>
       </div>
     </div>
 
-    <div class="panel" id="panel-matching">
-      <div class="card">
-        <div class="card-title"><i class="ti ti-git-merge"></i>Symptom ↔ Blutbild ↔ Diagnostik</div>
-        <div class="match-item" style="border-left:3px solid #E24B4A;border-radius:0 8px 8px 0">
-          <div class="match-header"><span class="match-title">Erschöpfung & Konzentration</span><span class="badge" style="background:#FCEBEB;color:#501313">Hohe Übereinstimmung</span></div>
-          <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"><span class="tag tag-danger">Ferritin ↓</span><span class="tag tag-warn">Vitamin D ↓</span><span class="tag tag-danger">Magnesium ↓</span><span class="tag tag-info">Zungenbelag weiß</span><span class="tag tag-info">Augenränder dunkel</span></div>
-        </div>
-        <div class="match-item" style="border-left:3px solid #EF9F27;border-radius:0 8px 8px 0">
-          <div class="match-header"><span class="match-title">Schilddrüse / Methylierung</span><span class="badge" style="background:#FAEEDA;color:#412402">Tendenz erkannt</span></div>
-          <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"><span class="tag tag-warn">TSH ↑</span><span class="tag tag-danger">Homocystein ↑</span><span class="tag tag-warn">Zink ↓</span><span class="tag tag-purple">Stimmungsschwankungen</span></div>
-        </div>
-        <div class="match-item" style="border-left:3px solid #533AB7;border-radius:0 8px 8px 0">
-          <div class="match-header"><span class="match-title">Fazial / Körperhaltung</span><span class="badge" style="background:#EEEDFE;color:#26215C">Strukturhinweis</span></div>
-          <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"><span class="tag tag-warn">Rückenschmerzen</span><span class="tag tag-purple">Zahneindrücke</span><span class="tag tag-info">Gesichts-Asymmetrie</span></div>
-        </div>
+    <div class="dsgvo-box">
+      <div class="dsgvo-title"><i class="ti ti-shield-lock"></i>Datenschutz &amp; Einwilligung</div>
+      <div class="dsgvo-text">
+        Ihre Angaben werden ausschlie&szlig;lich f&uuml;r die ganzheitliche Pr&auml;ventionsberatung verwendet.
+        Rechtsgrundlage: <b>Art. 9 Abs. 2 lit. a DSGVO</b> (Gesundheitsdaten).<br>
+        <b>Speicherung:</b> Verschl&uuml;sselt &middot; EU-Server Frankfurt &middot; <b>L&ouml;schung:</b> Jederzeit auf Anfrage m&ouml;glich.
+      </div>
+      <label class="consent-row">
+        <input type="checkbox" id="c-consent1" onchange="checkSubmit()">
+        <span>Ich willige in die Verarbeitung meiner Gesundheitsdaten f&uuml;r die Pr&auml;ventionsberatung ein.</span>
+      </label>
+      <label class="consent-row">
+        <input type="checkbox" id="c-consent2" onchange="checkSubmit()">
+        <span>Ich habe die Datenschutzhinweise gelesen und stimme der Speicherung zu.</span>
+      </label>
+      <label class="consent-row">
+        <input type="checkbox" id="c-consent3" onchange="checkSubmit()">
+        <span>Ich bin damit einverstanden, dass das heutige Gespr&auml;ch transkribiert und KI-gest&uuml;tzt ausgewertet wird.</span>
+      </label>
+      <div style="margin-top:1rem">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:6px;font-weight:500">Ihre digitale Unterschrift</div>
+        <canvas class="sig-canvas" id="sig-canvas" width="600" height="140"></canvas>
+        <span class="sig-clear" onclick="clearSignature()">Unterschrift l&ouml;schen</span>
       </div>
     </div>
 
-    <div class="panel" id="panel-naehrstoffe">
-      <div class="grid2" style="margin-bottom:1rem">
-        <div class="card">
-          <div class="card-title"><i class="ti ti-leaf"></i>Nährstoffprioritäten</div>
-          <div class="progress-row"><span class="progress-label">Eisen/Ferritin</span><div class="progress-bar-wrap"><div class="progress-bar" style="width:8%;background:#E24B4A"></div></div><span class="progress-val" style="color:#A32D2D">Kritisch</span></div>
-          <div class="progress-row"><span class="progress-label">Vitamin D3</span><div class="progress-bar-wrap"><div class="progress-bar" style="width:28%;background:#EF9F27"></div></div><span class="progress-val" style="color:#854F0B">Niedrig</span></div>
-          <div class="progress-row"><span class="progress-label">Magnesium</span><div class="progress-bar-wrap"><div class="progress-bar" style="width:35%;background:#EF9F27"></div></div><span class="progress-val" style="color:#854F0B">Niedrig</span></div>
-          <div class="progress-row"><span class="progress-label">Zink</span><div class="progress-bar-wrap"><div class="progress-bar" style="width:50%;background:#EF9F27"></div></div><span class="progress-val" style="color:#854F0B">Grenzw.</span></div>
-          <div class="progress-row"><span class="progress-label">B12 / Folat</span><div class="progress-bar-wrap"><div class="progress-bar" style="width:55%;background:#639922"></div></div><span class="progress-val" style="color:#3B6D11">OK</span></div>
-        </div>
-        <div class="card">
-          <div class="card-title"><i class="ti ti-pill"></i>Einnahmeprotokoll</div>
-          <div class="match-item"><div class="match-title" style="margin-bottom:4px">Eisen (Bisglycinate)</div><div style="font-size:11px;color:var(--color-text-secondary)">25 mg · abends · mit Vit C · nicht mit Kaffee</div></div>
-          <div class="match-item"><div class="match-title" style="margin-bottom:4px">Vitamin D3 + K2</div><div style="font-size:11px;color:var(--color-text-secondary)">5000 IE + 200 µg K2-MK7 · morgens zum Frühstück</div></div>
-          <div class="match-item"><div class="match-title" style="margin-bottom:4px">Magnesium Glycinat</div><div style="font-size:11px;color:var(--color-text-secondary)">300 mg · abends · fördert Schlaf</div></div>
-          <div class="match-item"><div class="match-title" style="margin-bottom:4px">B-Komplex (aktiv)</div><div style="font-size:11px;color:var(--color-text-secondary)">Methylfolat + Methylcobalamin · morgens</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="panel" id="panel-empfehlungen">
-      <div class="card" style="margin-bottom:1rem">
-        <div class="card-title"><i class="ti ti-clipboard-check"></i>Handlungsempfehlung</div>
-        <div style="font-size:11px;padding:6px 10px;background:#FAEEDA;color:#412402;border-radius:8px;margin-bottom:1rem">Präventionshinweise — keine ärztliche Diagnose oder Therapieanweisung</div>
-        <div class="rec-card"><div class="rec-label">Dentosophie / Zahnheilkunde</div>Zungeneindrücke, faziale Asymmetrie, Kieferstellung, Okklusion prüfen</div>
-        <div class="rec-card"><div class="rec-label">Osteopathie</div>Fasziales Screening Becken-Lenden, craniosakraler Rhythmus, Organptose</div>
-        <div class="rec-card"><div class="rec-label">Posturologie</div>Fußpropriozeption, Augenstellung, Gleichgewichtssystem, Gesamtaufrichtung</div>
-        <div class="rec-card"><div class="rec-label">Laborerweiterung</div>fT3/fT4, Schilddrüsen-AK, MTHFR, Omega-3-Index, Stuhlmikrobiom</div>
-      </div>
-      <div class="card">
-        <div class="card-title"><i class="ti ti-run"></i>Übungsprogramm</div>
-        <div class="grid3">
-          <div style="font-size:12px;border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:10px;text-align:center"><i class="ti ti-arrows-vertical" style="font-size:24px;color:#533AB7;display:block;margin-bottom:6px"></i><b>Wirbelsäule</b><br><span style="color:var(--color-text-secondary)">Katzenbuckel, thorakale Rotation</span></div>
-          <div style="font-size:12px;border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:10px;text-align:center"><i class="ti ti-lungs" style="font-size:24px;color:#1D9E75;display:block;margin-bottom:6px"></i><b>Leber / Darm</b><br><span style="color:var(--color-text-secondary)">Bauchatmung, Zwerchfellmobilisation</span></div>
-          <div style="font-size:12px;border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:10px;text-align:center"><i class="ti ti-star" style="font-size:24px;color:#BA7517;display:block;margin-bottom:6px"></i><b>Alignment</b><br><span style="color:var(--color-text-secondary)">Fußaktivierung, propriozeptive Übungen</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="panel" id="panel-campus">
-      <div class="grid3">
-        <div class="campus-card"><div class="campus-header" style="background:#EEEDFE"><i class="ti ti-dental" style="font-size:28px;color:#533AB7"></i></div><div class="campus-body"><div class="campus-tag" style="color:#533AB7">Ärzte & Therapeuten</div><div class="campus-name">Dentosophie Grundkurs</div><div class="campus-sub">Kieferstellung, Zunge, posturale Ketten</div></div></div>
-        <div class="campus-card"><div class="campus-header" style="background:#E1F5EE"><i class="ti ti-baby-carriage" style="font-size:28px;color:#0F6E56"></i></div><div class="campus-body"><div class="campus-tag" style="color:#0F6E56">Kinderärzte</div><div class="campus-name">U-Untersuchungen neu</div><div class="campus-sub">Ganzheitliche Kindervorsorge</div></div></div>
-        <div class="campus-card"><div class="campus-header" style="background:#FAEEDA"><i class="ti ti-droplet" style="font-size:28px;color:#854F0B"></i></div><div class="campus-body"><div class="campus-tag" style="color:#854F0B">Für alle</div><div class="campus-name">Blut lesen lernen</div><div class="campus-sub">Präventive Blutbild-Auswertung</div></div></div>
-        <div class="campus-card"><div class="campus-header" style="background:#E6F1FB"><i class="ti ti-body-scan" style="font-size:28px;color:#185FA5"></i></div><div class="campus-body"><div class="campus-tag" style="color:#185FA5">Therapeuten</div><div class="campus-name">Osteopathie & Faszien</div><div class="campus-sub">Organaufstellung, craniosakral</div></div></div>
-        <div class="campus-card"><div class="campus-header" style="background:#FAECE7"><i class="ti ti-eye" style="font-size:28px;color:#993C1D"></i></div><div class="campus-body"><div class="campus-tag" style="color:#993C1D">Posturologen</div><div class="campus-name">Posturologie Intensiv</div><div class="campus-sub">Gleichgewicht, Propriozeption</div></div></div>
-        <div class="campus-card" style="border:1.5px dashed var(--color-border-secondary)"><div class="campus-header" style="background:#f5f4f0"><i class="ti ti-plus" style="font-size:28px;color:#999"></i></div><div class="campus-body"><div class="campus-tag" style="color:#999">Erweiterbar</div><div class="campus-name" style="color:#555">Modul hinzufügen</div><div class="campus-sub">Eigene Kurse erstellen</div></div></div>
-      </div>
-    </div>
-
-    <div class="panel" id="panel-praxis">
-      <div class="grid3" style="margin-bottom:1rem">
-        <div class="metric"><div class="metric-label">Screenings gesamt</div><div class="metric-value">147</div><div class="metric-sub">+12 diesen Monat</div></div>
-        <div class="metric"><div class="metric-label">Auffällige Befunde</div><div class="metric-value" style="color:#A32D2D">38</div><div class="metric-sub">26% aller Klienten</div></div>
-        <div class="metric"><div class="metric-label">Campus-Absolventen</div><div class="metric-value" style="color:#533AB7">24</div><div class="metric-sub">Therapeuten & Ärzte</div></div>
-      </div>
-      <div class="card">
-        <div class="card-title"><i class="ti ti-chart-bar"></i>Häufigste Mängel</div>
-        <div class="progress-row"><span class="progress-label">Vitamin D</span><div class="progress-bar-wrap"><div class="progress-bar" style="width:78%;background:#533AB7"></div></div><span class="progress-val">78%</span></div>
-        <div class="progress-row"><span class="progress-label">Ferritin</span><div class="progress-bar-wrap"><div class="progress-bar" style="width:65%;background:#533AB7"></div></div><span class="progress-val">65%</span></div>
-        <div class="progress-row"><span class="progress-label">Magnesium</span><div class="progress-bar-wrap"><div class="progress-bar" style="width:58%;background:#533AB7"></div></div><span class="progress-val">58%</span></div>
-        <div class="progress-row"><span class="progress-label">Homocystein ↑</span><div class="progress-bar-wrap"><div class="progress-bar" style="width:41%;background:#E24B4A"></div></div><span class="progress-val">41%</span></div>
-      </div>
-    </div>
-
+    <button class="btn-submit" id="submit-btn" disabled onclick="submitForm()">
+      <i class="ti ti-send"></i>Anamnesebogen absenden
+    </button>
   </div>
 </div>
+
+<!-- SCREEN 2: DONE -->
+<div class="screen" id="screen-done">
+  <div class="done-wrap">
+    <div class="done-icon"><i class="ti ti-check"></i></div>
+    <div class="done-title">Vielen Dank!</div>
+    <div class="done-sub">Ihr Anamnesebogen wurde gespeichert.<br>Bitte geben Sie das Tablet an Ihren Therapeuten zur&uuml;ck.</div>
+    <div class="pin-label">Sitzungs-PIN f&uuml;r den Therapeuten:</div>
+    <div class="pin-display" id="pin-display">----</div><br>
+    <button class="btn-therapist" onclick="showScreen('pin')">
+      <i class="ti ti-stethoscope"></i>Therapeuten-Ansicht &ouml;ffnen
+    </button>
+  </div>
+</div>
+
+<!-- SCREEN 3: PIN -->
+<div class="screen" id="screen-pin">
+  <div class="pin-wrap">
+    <div style="font-size:40px;margin-bottom:1rem">&#128272;</div>
+    <h2>Therapeuten-Zugang</h2>
+    <p>Bitte geben Sie den 4-stelligen PIN ein,<br>den der Klient erhalten hat.</p>
+    <div class="pin-input-row">
+      <input class="pin-digit" type="tel" maxlength="1" id="p0" oninput="pinInput(0)" onkeydown="pinBack(event,0)">
+      <input class="pin-digit" type="tel" maxlength="1" id="p1" oninput="pinInput(1)" onkeydown="pinBack(event,1)">
+      <input class="pin-digit" type="tel" maxlength="1" id="p2" oninput="pinInput(2)" onkeydown="pinBack(event,2)">
+      <input class="pin-digit" type="tel" maxlength="1" id="p3" oninput="pinInput(3)" onkeydown="pinBack(event,3)">
+    </div>
+    <div class="pin-error" id="pin-error"></div>
+    <button class="btn-enter" onclick="checkPin()">Profil &ouml;ffnen &rarr;</button>
+  </div>
+</div>
+
+<!-- SCREEN 4: THERAPEUT -->
+<div class="screen" id="screen-therapist">
+  <div class="app">
+    <div class="sidebar">
+      <div class="logo"><div class="logo-title">VitalDiagnostik</div><div class="logo-sub">Ganzheitliches Screening</div></div>
+      <div class="nav-group">Klient</div>
+      <div class="nav-item active" onclick="showPanel('anamnese',this)"><i class="ti ti-clipboard-list"></i>Anamnese</div>
+      <div class="nav-item" onclick="showPanel('diagnostik',this)"><i class="ti ti-scan"></i>Bild-Diagnostik</div>
+      <div class="nav-item" onclick="showPanel('blut',this)"><i class="ti ti-droplet"></i>Blutwerte</div>
+      <div class="nav-group">Auswertung</div>
+      <div class="nav-item" onclick="showPanel('matching',this)"><i class="ti ti-git-merge"></i>Symptom-Matching</div>
+      <div class="nav-item" onclick="showPanel('naehrstoffe',this)"><i class="ti ti-leaf"></i>N&auml;hrstoffprofil</div>
+      <div class="nav-item" onclick="showPanel('empfehlungen',this)"><i class="ti ti-clipboard-check"></i>Handlungsplan</div>
+      <div class="nav-group">Plattform</div>
+      <div class="nav-item" onclick="showPanel('campus',this)"><i class="ti ti-school"></i>Campus</div>
+      <div class="nav-item" onclick="showPanel('praxis',this)"><i class="ti ti-building"></i>Praxis-Dashboard</div>
+    </div>
+    <div class="main">
+      <div class="topbar">
+        <div class="topbar-title" id="topbar-title">Anamnese &mdash; Symptomerfassung</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="badge" style="background:var(--purple-light);color:var(--purple-dark)">&bull; Screening aktiv</span>
+          <button class="btn btn-primary"><i class="ti ti-file-export"></i>Bericht</button>
+        </div>
+      </div>
+      <div class="content">
+
+        <div class="panel active" id="panel-anamnese">
+          <div class="client-summary">
+            <div class="client-avatar"><i class="ti ti-user"></i></div>
+            <div class="client-info" style="flex:1">
+              <h3 id="t-name">—</h3>
+              <p id="t-meta">—</p>
+              <div class="client-tags" id="t-symptoms"></div>
+            </div>
+            <div>
+              <div style="font-size:10px;color:var(--text2);margin-bottom:4px">Unterschrift</div>
+              <canvas class="sig-preview-canvas" id="sig-preview" width="200" height="60"></canvas>
+            </div>
+          </div>
+
+          <div class="record-area">
+            <div class="record-header">
+              <div class="record-title"><i class="ti ti-microphone"></i>Gespr&auml;ch aufnehmen</div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span class="timer" id="timer">00:00</span>
+                <button class="btn-record" id="record-btn" onclick="handleRecordBtn()">
+                  <span class="record-dot" id="record-dot"></span>
+                  <span id="record-label">Aufnahme starten</span>
+                </button>
+              </div>
+            </div>
+            <div class="transcript-box" id="transcript-box"><span style="color:var(--text3);font-style:italic">Das Gespr&auml;ch wird hier live transkribiert&hellip;</span></div>
+            <div class="status-bar"><span class="status-dot" id="status-dot"></span><span id="status-text">Bereit &middot; DSGVO-konform &middot; Einwilligung liegt vor</span></div>
+            <div class="ai-box" id="ai-box">
+              <div class="ai-title"><i class="ti ti-sparkles"></i>KI-Symptomanalyse</div>
+              <div id="ai-result"></div>
+            </div>
+          </div>
+
+          <div class="grid2">
+            <div class="card">
+              <div class="card-title"><i class="ti ti-user"></i>Klientendaten</div>
+              <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:3px">Name</label><input type="text" id="t-name-input">
+              <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:3px">Alter / Geburtsdatum</label><input type="text" id="t-age-input">
+              <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:3px">Hauptbeschwerden</label><textarea id="t-complaints-input" style="height:70px;resize:none"></textarea>
+              <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:3px">Lebensstil</label><input type="text" id="t-lifestyle-input">
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="ti ti-checklist"></i>Erkannte Symptome</div>
+              <div class="symptom-list" id="t-symptom-list"></div>
+              <hr class="divider" style="margin:0.5rem 0">
+              <div class="card-title" style="margin-bottom:0.5rem"><i class="ti ti-question-mark"></i>Alltagsfragen</div>
+              <div class="grid3" style="gap:6px">
+                <div style="font-size:11px;border:0.5px solid var(--border);border-radius:8px;padding:8px"><b>Ern&auml;hrung</b><br>H&uuml;lsenfr&uuml;chte? Jodiertes Salz?</div>
+                <div style="font-size:11px;border:0.5px solid var(--border);border-radius:8px;padding:8px"><b>Haltung</b><br>Sitzstunden t&auml;glich?</div>
+                <div style="font-size:11px;border:0.5px solid var(--border);border-radius:8px;padding:8px"><b>Schlaf</b><br>Aufwachen 1&ndash;3 Uhr?</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" id="panel-diagnostik">
+          <div class="grid2">
+            <div class="card">
+              <div class="card-title"><i class="ti ti-face-id"></i>Gesichtsdiagnostik</div>
+              <div style="border:1.5px dashed var(--border2);border-radius:var(--r2);padding:1.5rem;text-align:center;cursor:pointer;background:var(--bg)"><i class="ti ti-camera" style="font-size:28px;color:var(--text3);display:block;margin-bottom:8px"></i><p style="font-size:12px;color:var(--text2)">Foto aufnehmen oder hochladen</p></div>
+              <hr class="divider">
+              <div class="match-item"><div class="match-header"><span class="match-title">Augenunterr&auml;nder</span><span class="tag tag-warn">Niere / Ersch&ouml;pfung</span></div><div style="font-size:11px;color:var(--text2)">Dunkle Verf&auml;rbung &rarr; Nierenbelastung, Eisenmangel</div></div>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="ti ti-language"></i>Zungendiagnostik</div>
+              <div style="border:1.5px dashed var(--border2);border-radius:var(--r2);padding:1.5rem;text-align:center;background:var(--bg)"><i class="ti ti-camera" style="font-size:28px;color:var(--text3);display:block;margin-bottom:8px"></i><p style="font-size:12px;color:var(--text2)">Zungenaufnahme machen</p></div>
+              <hr class="divider">
+              <div class="match-item"><div class="match-header"><span class="match-title">Wei&szlig;er Belag</span><span class="tag tag-warn">Darm / Magen</span></div><div style="font-size:11px;color:var(--text2)">Darmflora, Candidose pr&uuml;fen</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" id="panel-blut">
+          <div class="card">
+            <div class="card-title"><i class="ti ti-droplet"></i>Blutwerte &mdash; Pr&auml;ventionsrahmen</div>
+            <div style="font-size:11px;color:#412402;padding:6px 10px;background:var(--orange-light);border-radius:8px;margin-bottom:1rem">&#9888; Orientierungswerte &middot; kein Medizinprodukt &middot; ersetzt keine &auml;rztliche Diagnose</div>
+            <div id="symptom-hint" style="display:none;font-size:11px;color:var(--purple-dark);padding:6px 10px;background:var(--purple-light);border-radius:8px;margin-bottom:1rem"></div>
+            <div class="blood-row" style="font-size:11px;color:var(--text2);font-weight:500"><span class="blood-name">Parameter</span><span class="blood-val">Wert</span><span class="blood-ref">Pr&auml;vention-Opt.</span><span class="blood-bar-wrap" style="background:transparent"></span><span style="width:90px;text-align:center">Status</span></div>
+            <div class="blood-row"><span class="blood-name">Ferritin</span><span class="blood-val">12 &micro;g/l</span><span class="blood-ref">70&ndash;150 &micro;g/l</span><div class="blood-bar-wrap"><div class="blood-bar" style="width:8%;background:var(--red)"></div></div><span style="width:90px;text-align:center"><span class="tag tag-danger">&darr; Niedrig</span></span></div>
+            <div class="blood-row"><span class="blood-name">Vitamin D3</span><span class="blood-val">22 ng/ml</span><span class="blood-ref">60&ndash;80 ng/ml</span><div class="blood-bar-wrap"><div class="blood-bar" style="width:27%;background:var(--orange)"></div></div><span style="width:90px;text-align:center"><span class="tag tag-warn">&darr; Grenzwertig</span></span></div>
+            <div class="blood-row"><span class="blood-name">TSH</span><span class="blood-val">3.8 mIU/l</span><span class="blood-ref">0.5&ndash;2.0 mIU/l</span><div class="blood-bar-wrap"><div class="blood-bar" style="width:85%;background:var(--orange)"></div></div><span style="width:90px;text-align:center"><span class="tag tag-warn">&uarr; Grenzwertig</span></span></div>
+            <div class="blood-row"><span class="blood-name">hsCRP</span><span class="blood-val">0.3 mg/l</span><span class="blood-ref">unter 0.5 mg/l</span><div class="blood-bar-wrap"><div class="blood-bar" style="width:60%;background:var(--green)"></div></div><span style="width:90px;text-align:center"><span class="tag tag-ok">Optimal</span></span></div>
+            <div class="blood-row"><span class="blood-name">Magnesium</span><span class="blood-val">0.68 mmol/l</span><span class="blood-ref">0.85&ndash;1.0 mmol/l</span><div class="blood-bar-wrap"><div class="blood-bar" style="width:35%;background:var(--red)"></div></div><span style="width:90px;text-align:center"><span class="tag tag-danger">&darr; Niedrig</span></span></div>
+            <div class="blood-row"><span class="blood-name">Homocystein</span><span class="blood-val">11.2 &micro;mol/l</span><span class="blood-ref">unter 8 &micro;mol/l</span><div class="blood-bar-wrap"><div class="blood-bar" style="width:78%;background:var(--red)"></div></div><span style="width:90px;text-align:center"><span class="tag tag-danger">&uarr; Erh&ouml;ht</span></span></div>
+            <div class="blood-row" style="border:none"><span class="blood-name">Zink</span><span class="blood-val">9.1 &micro;mol/l</span><span class="blood-ref">12&ndash;18 &micro;mol/l</span><div class="blood-bar-wrap"><div class="blood-bar" style="width:45%;background:var(--orange)"></div></div><span style="width:90px;text-align:center"><span class="tag tag-warn">&darr; Grenzwertig</span></span></div>
+          </div>
+        </div>
+
+        <div class="panel" id="panel-matching">
+          <div class="grid2">
+            <div class="card">
+              <div class="card-title"><i class="ti ti-git-merge"></i>Symptom&ndash;Blutbild-Korrelation</div>
+              <div class="match-item"><div class="match-header"><span class="match-title">Ersch&ouml;pfung + Konzentration &darr;</span><span class="tag tag-danger">Kritisch</span></div><div style="font-size:11px;color:var(--text2)">Ferritin 12 &middot; TSH 3.8 &middot; Magnesium &darr;</div></div>
+              <div class="match-item"><div class="match-header"><span class="match-title">R&uuml;ckenschmerzen</span><span class="tag tag-warn">Relevant</span></div><div style="font-size:11px;color:var(--text2)">Magnesium &darr; &rarr; Muskeltonus, Vit D &darr; &rarr; Knochendichte</div></div>
+              <div class="match-item"><div class="match-header"><span class="match-title">Verdauungsprobleme</span><span class="tag tag-warn">Relevant</span></div><div style="font-size:11px;color:var(--text2)">Zink &darr; &rarr; Darmschleimhaut, Homocystein &uarr;</div></div>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="ti ti-chart-radar"></i>Systemische Belastung</div>
+              <div class="progress-row"><span class="progress-label">Energiestoffwechsel</span><div class="progress-bar-wrap"><div class="progress-bar" style="width:85%;background:var(--red)"></div></div><span class="progress-val" style="color:#A32D2D">85%</span></div>
+              <div class="progress-row"><span class="progress-label">Immunsystem</span><div class="progress-bar-wrap"><div class="progress-bar" style="width:60%;background:var(--orange)"></div></div><span class="progress-val" style="color:#854F0B">60%</span></div>
+              <div class="progress-row"><span class="progress-label">Hormonsystem</span><div class="progress-bar-wrap"><div class="progress-bar" style="width:72%;background:var(--orange)"></div></div><span class="progress-val" style="color:#854F0B">72%</span></div>
+              <div class="progress-row"><span class="progress-label">Darm / Mikrobiom</span><div class="progress-bar-wrap"><div class="progress-bar" style="width:55%;background:var(--orange)"></div></div><span class="progress-val" style="color:#854F0B">55%</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" id="panel-naehrstoffe">
+          <div class="grid2">
+            <div class="card">
+              <div class="card-title"><i class="ti ti-leaf"></i>N&auml;hrstoffstatus</div>
+              <div class="progress-row"><span class="progress-label">Eisen / Ferritin</span><div class="progress-bar-wrap"><div class="progress-bar" style="width:12%;background:var(--red)"></div></div><span class="progress-val" style="color:#A32D2D">12%</span></div>
+              <div class="progress-row"><span class="progress-label">Vitamin D3</span><div class="progress-bar-wrap"><div class="progress-bar" style="width:27%;background:var(--orange)"></div></div><span class="progress-val" style="color:#854F0B">27%</span></div>
+              <div class="progress-row"><span class="progress-label">Magnesium</span><div class="progress-bar-wrap"><div class="progress-bar" style="width:35%;background:var(--red)"></div></div><span class="progress-val" style="color:#A32D2D">35%</span></div>
+              <div class="progress-row"><span class="progress-label">Zink</span><div class="progress-bar-wrap"><div class="progress-bar" style="width:45%;background:var(--orange)"></div></div><span class="progress-val" style="color:#854F0B">45%</span></div>
+            </div>
+            <div class="card">
+              <div class="card-title"><i class="ti ti-pill"></i>Einnahmeprotokoll</div>
+              <div class="match-item"><div class="match-title" style="margin-bottom:4px">Eisen (Bisglycinate)</div><div style="font-size:11px;color:var(--text2)">25 mg &middot; abends &middot; mit Vit C</div></div>
+              <div class="match-item"><div class="match-title" style="margin-bottom:4px">Vitamin D3 + K2</div><div style="font-size:11px;color:var(--text2)">5000 IE + 200 &micro;g K2-MK7 &middot; morgens</div></div>
+              <div class="match-item"><div class="match-title" style="margin-bottom:4px">Magnesium Glycinat</div><div style="font-size:11px;color:var(--text2)">300 mg &middot; abends</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" id="panel-empfehlungen">
+          <div class="card">
+            <div class="card-title"><i class="ti ti-clipboard-check"></i>Handlungsempfehlung</div>
+            <div style="font-size:11px;padding:6px 10px;background:var(--orange-light);color:#412402;border-radius:8px;margin-bottom:1rem">Pr&auml;ventionshinweise &mdash; keine &auml;rztliche Diagnose</div>
+            <div class="rec-card"><div class="rec-label">Dentosophie</div>Zungeneindr&uuml;cke, Kieferstellung, Okklusion pr&uuml;fen</div>
+            <div class="rec-card"><div class="rec-label">Osteopathie</div>Fasziales Screening Becken-Lenden, craniosakraler Rhythmus</div>
+            <div class="rec-card"><div class="rec-label">Laborerweiterung</div>fT3/fT4, Schilddr&uuml;sen-AK, MTHFR, Omega-3-Index</div>
+          </div>
+        </div>
+
+        <div class="panel" id="panel-campus">
+          <div class="grid3">
+            <div style="border:0.5px solid var(--border);border-radius:var(--r2);overflow:hidden;cursor:pointer"><div style="height:60px;display:flex;align-items:center;justify-content:center;background:var(--purple-light)"><i class="ti ti-dental" style="font-size:28px;color:var(--purple)"></i></div><div style="padding:0.75rem 1rem"><div style="font-size:10px;font-weight:600;color:var(--purple);text-transform:uppercase;margin-bottom:4px">Therapeuten</div><div style="font-size:13px;font-weight:500">Dentosophie</div></div></div>
+            <div style="border:0.5px solid var(--border);border-radius:var(--r2);overflow:hidden;cursor:pointer"><div style="height:60px;display:flex;align-items:center;justify-content:center;background:var(--orange-light)"><i class="ti ti-droplet" style="font-size:28px;color:#854F0B"></i></div><div style="padding:0.75rem 1rem"><div style="font-size:10px;font-weight:600;color:#854F0B;text-transform:uppercase;margin-bottom:4px">F&uuml;r alle</div><div style="font-size:13px;font-weight:500">Blut lesen lernen</div></div></div>
+            <div style="border:0.5px solid var(--border);border-radius:var(--r2);overflow:hidden;cursor:pointer"><div style="height:60px;display:flex;align-items:center;justify-content:center;background:var(--blue-light)"><i class="ti ti-body-scan" style="font-size:28px;color:#185FA5"></i></div><div style="padding:0.75rem 1rem"><div style="font-size:10px;font-weight:600;color:#185FA5;text-transform:uppercase;margin-bottom:4px">Therapeuten</div><div style="font-size:13px;font-weight:500">Osteopathie</div></div></div>
+          </div>
+        </div>
+
+        <div class="panel" id="panel-praxis">
+          <div class="grid3" style="margin-bottom:1rem">
+            <div class="metric"><div class="metric-label">Screenings gesamt</div><div class="metric-value">147</div><div class="metric-sub">+12 diesen Monat</div></div>
+            <div class="metric"><div class="metric-label">Auff&auml;llige Befunde</div><div class="metric-value" style="color:#A32D2D">38</div><div class="metric-sub">26% aller Klienten</div></div>
+            <div class="metric"><div class="metric-label">Campus-Absolventen</div><div class="metric-value" style="color:var(--purple)">24</div></div>
+          </div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-chart-bar"></i>H&auml;ufigste M&auml;ngel</div>
+            <div class="progress-row"><span class="progress-label">Vitamin D</span><div class="progress-bar-wrap"><div class="progress-bar" style="width:78%;background:var(--purple)"></div></div><span class="progress-val">78%</span></div>
+            <div class="progress-row"><span class="progress-label">Ferritin</span><div class="progress-bar-wrap"><div class="progress-bar" style="width:65%;background:var(--purple)"></div></div><span class="progress-val">65%</span></div>
+            <div class="progress-row"><span class="progress-label">Magnesium</span><div class="progress-bar-wrap"><div class="progress-bar" style="width:58%;background:var(--purple)"></div></div><span class="progress-val">58%</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-const titles={anamnese:'Anamnese — Symptomerfassung',diagnostik:'Bild-Diagnostik — Gesicht & Zunge',blut:'Blutwerte — Präventionsauswertung',matching:'Symptom-Matching — Gesamtbild',naehrstoffe:'Nährstoffprofil & Einnahmeplan',empfehlungen:'Handlungsplan & Übungsprogramm',campus:'Fortbildungs-Campus',praxis:'Praxis-Dashboard'};
+var clientData={},generatedPin='',painScale=0,hasSigned=false,selectedSymptoms=[];
+var isRecording=false,recognition=null,timerInterval=null,seconds=0,fullTranscript='';
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.getElementById('screen-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function toggleSymptom(el){
+  el.classList.toggle('selected');
+  var s=el.dataset.s;
+  if(el.classList.contains('selected')) selectedSymptoms.push(s);
+  else selectedSymptoms=selectedSymptoms.filter(function(x){return x!==s;});
+}
+
+function selectScale(el,val){
+  document.querySelectorAll('.scale-btn').forEach(function(b){b.classList.remove('selected');});
+  el.classList.add('selected');painScale=val;
+}
+
+// Signature
+(function(){
+  var canvas=document.getElementById('sig-canvas');
+  var ctx=canvas.getContext('2d');
+  var drawing=false;
+  ctx.strokeStyle='#533AB7';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  function getPos(e){
+    var r=canvas.getBoundingClientRect();
+    var scale=canvas.width/r.width;
+    if(e.touches)return{x:(e.touches[0].clientX-r.left)*scale,y:(e.touches[0].clientY-r.top)*scale};
+    return{x:(e.clientX-r.left)*scale,y:(e.clientY-r.top)*scale};
+  }
+  function start(e){e.preventDefault();drawing=true;var p=getPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);}
+  function draw(e){e.preventDefault();if(!drawing)return;var p=getPos(e);ctx.lineTo(p.x,p.y);ctx.stroke();hasSigned=true;canvas.classList.add('signed');checkSubmit();}
+  function end(){drawing=false;}
+  canvas.addEventListener('mousedown',start);canvas.addEventListener('mousemove',draw);canvas.addEventListener('mouseup',end);
+  canvas.addEventListener('touchstart',start,{passive:false});canvas.addEventListener('touchmove',draw,{passive:false});canvas.addEventListener('touchend',end);
+})();
+
+function clearSignature(){
+  var c=document.getElementById('sig-canvas');c.getContext('2d').clearRect(0,0,c.width,c.height);c.classList.remove('signed');hasSigned=false;checkSubmit();
+}
+
+function checkSubmit(){
+  var ok=document.getElementById('c-consent1').checked&&document.getElementById('c-consent2').checked&&document.getElementById('c-consent3').checked&&hasSigned;
+  document.getElementById('submit-btn').disabled=!ok;
+}
+
+function submitForm(){
+  var fn=document.getElementById('c-firstname').value.trim();
+  var ln=document.getElementById('c-lastname').value.trim();
+  clientData={
+    name:(fn+' '+ln).trim()||'Anonym',
+    birth:document.getElementById('c-birth').value||'—',
+    gender:document.getElementById('c-gender').value||'—',
+    job:document.getElementById('c-job').value||'—',
+    weight:document.getElementById('c-weight').value||'—',
+    complaints:document.getElementById('c-complaints').value||'—',
+    duration:document.getElementById('c-duration').value||'—',
+    painScale:painScale||'—',
+    symptoms:selectedSymptoms.slice(),
+    diet:document.getElementById('c-diet').value||'—',
+    sitting:document.getElementById('c-sitting').value||'—',
+    sport:document.getElementById('c-sport').value||'—',
+    meds:document.getElementById('c-meds').value||'—',
+    sigDataUrl:document.getElementById('sig-canvas').toDataURL()
+  };
+  generatedPin=String(Math.floor(1000+Math.random()*9000));
+  document.getElementById('pin-display').textContent=generatedPin;
+  showScreen('done');
+}
+
+function pinInput(idx){
+  var val=document.getElementById('p'+idx).value.replace(/\D/g,'');
+  document.getElementById('p'+idx).value=val;
+  if(val&&idx<3)document.getElementById('p'+(idx+1)).focus();
+}
+function pinBack(e,idx){
+  if(e.key==='Backspace'&&!document.getElementById('p'+idx).value&&idx>0)document.getElementById('p'+(idx-1)).focus();
+}
+function checkPin(){
+  var entered=[0,1,2,3].map(function(i){return document.getElementById('p'+i).value;}).join('');
+  if(entered===generatedPin){
+    document.getElementById('pin-error').textContent='';
+    loadTherapistView();
+    showScreen('therapist');
+  } else {
+    document.getElementById('pin-error').textContent='Falscher PIN. Bitte erneut versuchen.';
+    [0,1,2,3].forEach(function(i){document.getElementById('p'+i).value='';});
+    document.getElementById('p0').focus();
+  }
+}
+
+function loadTherapistView(){
+  var d=clientData;
+  document.getElementById('t-name').textContent=d.name;
+  document.getElementById('t-meta').textContent=d.birth+' \u00b7 '+d.gender+' \u00b7 '+d.job+' \u00b7 '+d.weight+' kg \u00b7 Schmerz: '+d.painScale+'/10';
+  var tagsEl=document.getElementById('t-symptoms');
+  tagsEl.innerHTML=d.symptoms.map(function(s){return '<span class="tag tag-purple">'+s+'</span>';}).join('');
+  document.getElementById('t-name-input').value=d.name;
+  document.getElementById('t-age-input').value=d.birth+' \u00b7 '+d.gender;
+  document.getElementById('t-complaints-input').value=d.complaints+(d.duration&&d.duration!=='—'?' (seit: '+d.duration+')':'');
+  document.getElementById('t-lifestyle-input').value=[d.diet,d.sitting?'Sitzen: '+d.sitting:'',d.sport?'Sport: '+d.sport:''].filter(function(x){return x&&x!=='—';}).join(' \u00b7 ');
+  var symEl=document.getElementById('t-symptom-list');
+  var cols=['tag-danger','tag-warn','tag-ok','tag-info','tag-purple'];
+  symEl.innerHTML=d.symptoms.map(function(s,i){return '<span class="tag '+cols[i%cols.length]+'">'+s+'</span>';}).join('');
+  if(d.meds&&d.meds!=='—') symEl.innerHTML+='<br><span style="font-size:11px;color:var(--text2);margin-top:6px;display:block"><b>Medikamente:</b> '+d.meds+'</span>';
+  var prev=document.getElementById('sig-preview');
+  var pctx=prev.getContext('2d');
+  var img=new Image();
+  img.onload=function(){pctx.clearRect(0,0,prev.width,prev.height);pctx.drawImage(img,0,0,prev.width,prev.height);};
+  img.src=d.sigDataUrl;
+}
+
+var titles={anamnese:'Anamnese \u2014 Symptomerfassung',diagnostik:'Bild-Diagnostik \u2014 Gesicht & Zunge',blut:'Blutwerte \u2014 Pr\u00e4ventionsauswertung',matching:'Symptom-Matching \u2014 Gesamtbild',naehrstoffe:'N\u00e4hrstoffprofil & Einnahmeplan',empfehlungen:'Handlungsplan & \u00dcbungsprogramm',campus:'Fortbildungs-Campus',praxis:'Praxis-Dashboard'};
 function showPanel(id,el){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
   document.getElementById('panel-'+id).classList.add('active');
   el.classList.add('active');
   document.getElementById('topbar-title').textContent=titles[id];
+}
+
+function handleRecordBtn(){if(!isRecording)startRecording();else stopRecording();}
+function startRecording(){
+  if(!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)){alert('Bitte Chrome oder Edge verwenden.');return;}
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  recognition=new SR();recognition.lang='de-DE';recognition.continuous=true;recognition.interimResults=true;
+  document.getElementById('transcript-box').innerHTML='';fullTranscript='';
+  recognition.onresult=function(e){
+    var interim='',final='';
+    for(var i=e.resultIndex;i<e.results.length;i++){
+      if(e.results[i].isFinal)final+=e.results[i][0].transcript+' ';else interim+=e.results[i][0].transcript;
+    }
+    if(final)fullTranscript+=final;
+    document.getElementById('transcript-box').textContent=fullTranscript+interim;
+  };
+  recognition.start();isRecording=true;
+  document.getElementById('record-btn').classList.add('recording');
+  document.getElementById('record-label').textContent='Aufnahme stoppen';
+  document.getElementById('record-dot').classList.add('blinking');
+  setStatus('Aufnahme l\u00e4uft \u2014 live transkribiert','green');
+  seconds=0;
+  timerInterval=setInterval(function(){seconds++;document.getElementById('timer').textContent=String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0');},1000);
+}
+function stopRecording(){
+  if(recognition)recognition.stop();isRecording=false;clearInterval(timerInterval);
+  document.getElementById('record-btn').classList.remove('recording');
+  document.getElementById('record-label').textContent='Neue Aufnahme';
+  document.getElementById('record-dot').classList.remove('blinking');
+  setStatus('Aufnahme beendet \u2014 KI analysiert\u2026','orange');
+  if(fullTranscript.trim().length>10)analyzeWithAI(fullTranscript);
+}
+function setStatus(text,color){
+  document.getElementById('status-text').textContent=text;
+  document.getElementById('status-dot').style.background=color==='green'?'var(--green)':color==='red'?'var(--red)':'var(--orange)';
+}
+async function analyzeWithAI(transcript){
+  var box=document.getElementById('ai-box'),result=document.getElementById('ai-result');
+  box.style.display='block';result.innerHTML='<span style="font-size:12px;color:var(--text2)">Analysiere\u2026</span>';
+  try{
+    var res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,
+        system:'Extrahiere aus dem Transkript Symptome mit Schweregrad (kritisch/relevant/beobachten), Blutwert-Hinweise und K\u00f6rpersysteme. Antworte NUR als JSON ohne Backticks: {"symptome":[{"name":"...","schweregrad":"kritisch|relevant|beobachten"}],"blut_hinweise":["..."],"systeme":["..."],"zusammenfassung":"..."}',
+        messages:[{role:'user',content:'Klient: '+clientData.name+'. Vorab-Symptome: '+clientData.symptoms.join(', ')+'. Transkript: '+transcript}]})
+    });
+    var data=await res.json();
+    var text=data.content.map(function(i){return i.text||'';}).join('').replace(/```json|```/g,'').trim();
+    var p=JSON.parse(text);
+    if(p.symptome){var symEl=document.getElementById('t-symptom-list');p.symptome.forEach(function(s){var cls=s.schweregrad==='kritisch'?'tag-danger':s.schweregrad==='relevant'?'tag-warn':'tag-info';symEl.innerHTML+='<span class="tag '+cls+'">'+s.name+'</span>';});}
+    if(p.blut_hinweise&&p.blut_hinweise.length){var h=document.getElementById('symptom-hint');h.style.display='block';h.innerHTML='<b>\ud83e\ude78 Richtwert-Hinweise:</b> '+p.blut_hinweise.join(' \u00b7 ');}
+    result.innerHTML='<div style="font-size:12px;margin-bottom:6px"><b>Zusammenfassung:</b> '+(p.zusammenfassung||'')+'</div><div style="display:flex;flex-wrap:wrap;gap:4px">'+(p.symptome||[]).map(function(s){return '<span class="tag '+(s.schweregrad==='kritisch'?'tag-danger':s.schweregrad==='relevant'?'tag-warn':'tag-info')+'">'+s.name+'</span>';}).join('')+'</div>';
+    setStatus('Analyse abgeschlossen \u00b7 Symptome erg\u00e4nzt','green');
+  }catch(e){result.innerHTML='<span style="font-size:12px;color:var(--red)">Analyse nicht verf\u00fcgbar.</span>';setStatus('Fehler','red');}
 }
 </script>
 </body>
